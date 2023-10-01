@@ -37,3 +37,17 @@ export const getAllWatchlist = (req, res, next) => {
       console.log(err);
     });
 };
+
+export const deleteWatchlist = (req, res, next) => {
+  const watchlistId = req?.query?.watchlistId;
+
+  Watchlist.findByIdAndDelete({ _id: watchlistId })
+    .then((response) => {
+      return res
+        .status(200)
+        .json({ message: "Watchlist deleted successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

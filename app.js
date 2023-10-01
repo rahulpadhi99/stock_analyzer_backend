@@ -1,9 +1,9 @@
 import express from "express";
 import authRoutes from "./router/auth.js";
 import watchlistRoutes from "./router/watchlist.js";
+import symbolRoutes from "./router/symbol.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import axios from "axios";
 const app = express();
 
 app.use(bodyParser.json());
@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRoutes);
 app.use("/watchlist", watchlistRoutes);
+app.use("/symbols", symbolRoutes);
 
 mongoose
   .connect(
