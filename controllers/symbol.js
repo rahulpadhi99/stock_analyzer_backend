@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import { ObjectId } from "mongodb";
 import Watchlist from "../models/watchlist.js";
 
 export const addSymbols = (req, res, next) => {
@@ -13,7 +11,23 @@ export const addSymbols = (req, res, next) => {
         res.status(203).json({ message: "Watchlist does not exists" });
       } else {
         let exisitingSymbols = watchlist.symbols;
-        let updatedSymbols = [...exisitingSymbols, symbols];
+        const oldSymbols = exisitingSymbols?.map((sym) => sym?.name);
+        let filteredSymbols = symbols?.filter(
+          (symbol) => !oldSymbols?.includes(symbol?.name)
+        );
+        let updatedSymbols = [...exisitingSymbols, ...filteredSymbols];
+        updatedSymbols.sort((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
         watchlist.symbols = updatedSymbols;
         return watchlist.save().then(() => {
           res.status(200).json({ message: "symbols added successfully" });
