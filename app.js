@@ -4,7 +4,13 @@ import watchlistRoutes from "./router/watchlist.js";
 import symbolRoutes from "./router/symbol.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
 const app = express();
+dotenv.config();
+
+const DATABASE_URL = process.env.MONGODB_CONNECT_URL;
+const PORT = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -23,11 +29,9 @@ app.use("/watchlist", watchlistRoutes);
 app.use("/symbols", symbolRoutes);
 
 mongoose
-  .connect(
-    "mongodb+srv://dbStockAnalyzer:Nxgk2oAvV56cG0PG@cluster0.ccumejj.mongodb.net/stockDB?retryWrites=true"
-  )
+  .connect(DATABASE_URL)
   .then(() => {
-    app.listen(8000);
+    app.listen(PORT);
   })
   .catch((err) => {
     console.log(err);
