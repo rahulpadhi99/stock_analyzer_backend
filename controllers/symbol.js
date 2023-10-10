@@ -1,5 +1,9 @@
 import Watchlist from "../models/watchlist.js";
+import { SYMBOL_LIST_CONST } from "../utils/constant.js";
 
+export const getSymbolList = (req, res, next) => {
+  return res.status(200).json(SYMBOL_LIST_CONST);
+};
 export const addSymbols = (req, res, next) => {
   const userId = req?.body?.userId;
   const watchlistId = req?.body?.watchlistId;
