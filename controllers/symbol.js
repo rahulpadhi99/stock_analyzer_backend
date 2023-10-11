@@ -15,14 +15,14 @@ export const addSymbols = (req, res, next) => {
         res.status(203).json({ message: "Watchlist does not exists" });
       } else {
         let exisitingSymbols = watchlist.symbols;
-        const oldSymbols = exisitingSymbols?.map((sym) => sym?.name);
+        const oldSymbols = exisitingSymbols?.map((sym) => sym?.symbol);
         let filteredSymbols = symbols?.filter(
-          (symbol) => !oldSymbols?.includes(symbol?.name)
+          (symbol) => !oldSymbols?.includes(symbol?.symbol)
         );
         let updatedSymbols = [...exisitingSymbols, ...filteredSymbols];
         updatedSymbols.sort((a, b) => {
-          let fa = a.name.toLowerCase(),
-            fb = b.name.toLowerCase();
+          let fa = a.symbol.toLowerCase(),
+            fb = b.symbol.toLowerCase();
 
           if (fa < fb) {
             return -1;

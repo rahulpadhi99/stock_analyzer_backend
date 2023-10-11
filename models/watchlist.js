@@ -9,7 +9,8 @@ const watchlistSchema = new Schema(
     },
     symbols: [
       {
-        name: { type: String, required: true },
+        symbol: { type: String, required: true },
+        company: { type: String },
         note: { type: String },
       },
     ],

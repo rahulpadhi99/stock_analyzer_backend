@@ -4,7 +4,7 @@ export const addWatchlist = (req, res, next) => {
   const name = req?.body?.name;
   const userId = req?.body?.userId;
 
-  Watchlist.findOne({ name: name })
+  Watchlist.findOne({ name: name, creator: userId })
     .then((watchlist) => {
       if (watchlist) {
         res
