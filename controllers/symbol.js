@@ -1,8 +1,11 @@
+import axios from "axios";
 import Watchlist from "../models/watchlist.js";
-import { SYMBOL_LIST_CONST } from "../utils/constant.js";
 
-export const getSymbolList = (req, res, next) => {
-  return res.status(200).json(SYMBOL_LIST_CONST);
+export const getSymbolList = async (req, res, next) => {
+  const response = await axios.get(
+    `${process.env.NODE_PUBLIC_EODHD_BASE_URL}/exchange-symbol-list/NSE?api_token=${process.env.NODE_PUBLIC_EODHD_API_KEY}&&fmt=json`
+  );
+  return res.status(200).json(response?.data);
 };
 export const addSymbols = (req, res, next) => {
   const userId = req?.body?.userId;
@@ -15,14 +18,14 @@ export const addSymbols = (req, res, next) => {
         res.status(203).json({ message: "Watchlist does not exists" });
       } else {
         let exisitingSymbols = watchlist.symbols;
-        const oldSymbols = exisitingSymbols?.map((sym) => sym?.symbol);
+        const oldSymbols = exisitingSymbols?.map((sym) => sym?.Code);
         let filteredSymbols = symbols?.filter(
-          (symbol) => !oldSymbols?.includes(symbol?.symbol)
+          (symbol) => !oldSymbols?.includes(symbol?.Code)
         );
         let updatedSymbols = [...exisitingSymbols, ...filteredSymbols];
         updatedSymbols.sort((a, b) => {
-          let fa = a.symbol.toLowerCase(),
-            fb = b.symbol.toLowerCase();
+          let fa = a.Code.toLowerCase(),
+            fb = b.Code.toLowerCase();
 
           if (fa < fb) {
             return -1;
